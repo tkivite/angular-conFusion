@@ -21,9 +21,12 @@ promotion: Promotion;
 constructor(private dishservice: DishService,
 private promotionservice: PromotionService,private leaderservice: LeaderService) { }
 ngOnInit() {
-this.dish = this.dishservice.getFeaturedDish();
-this.promotion = this.promotionservice.getFeaturedPromotion();
-this.leader = this.leaderservice.getFeaturedLeader();
+//this.dish = this.dishservice.getFeaturedDish();
+this.dishservice.getFeaturedDish().then(dish => this.dish = dish);
+//this.promotion = this.promotionservice.getFeaturedPromotion();
+this.promotionservice.getFeaturedPromotion().then(promotion => this.promotion = promotion);
+//this.leader = this.leaderservice.getFeaturedLeader();
+    this.leaderservice.getFeaturedLeader().then(leader => this.leader = leader);
 }
    
 
