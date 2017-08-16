@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 
 import { Dish } from '../shared/dish';
-import { DishService } from '../services/dish.service';
 import {Promotion } from '../shared/promotion';
-import {PromotionService } from '../services/promotion.service';
 import {Leader } from '../shared/leader';
+
+import { DishService } from '../services/dish.service';
+import {PromotionService } from '../services/promotion.service';
 import {LeaderService } from '../services/leader.service';
+
+
+
 
 
 @Component({
@@ -13,20 +17,23 @@ import {LeaderService } from '../services/leader.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-      
-      dish: Dish;
+export class HomeComponent implements OnInit {      
+dish: Dish;
 promotion: Promotion;
-    leader: Leader;
-constructor(private dishservice: DishService,
-private promotionservice: PromotionService,private leaderservice: LeaderService) { }
+leader: Leader;
+constructor(
+    private dishservice: DishService,
+    private promotionservice: PromotionService,
+    private leaderservice: LeaderService,
+    @Inject('BaseURL') private BaseURL) { }
 ngOnInit() {
-//this.dish = this.dishservice.getFeaturedDish();
-this.dishservice.getFeaturedDish().subscribe(dish => this.dish = dish);
-//this.promotion = this.promotionservice.getFeaturedPromotion();
-this.promotionservice.getFeaturedPromotion().subscribe(promotion => this.promotion = promotion);
-//this.leader = this.leaderservice.getFeaturedLeader();
+    //this.dish = this.dishservice.getFeaturedDish();
+    this.dishservice.getFeaturedDish().subscribe(dish => this.dish = dish);
+    //this.promotion = this.promotionservice.getFeaturedPromotion();
+    this.promotionservice.getFeaturedPromotion().subscribe(promotion => this.promotion = promotion);
+    //this.leader = this.leaderservice.getFeaturedLeader();
     this.leaderservice.getFeaturedLeader().subscribe(leader => this.leader = leader);
+        //console.log(this.leader);
 }
    
 
