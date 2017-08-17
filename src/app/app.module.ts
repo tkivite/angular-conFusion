@@ -31,6 +31,7 @@ import { LeaderService } from './services/leader.service';
 import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { baseURL } from './shared/baseurl';
 import { RestangularConfigFactory } from './shared/restConfig';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { RestangularConfigFactory } from './shared/restConfig';
     AboutComponent,
     HomeComponent,
     ContactComponent,
-    LoginComponent
+    LoginComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,    
@@ -52,7 +54,8 @@ import { RestangularConfigFactory } from './shared/restConfig';
     HttpModule,
     MaterialModule,
     FlexLayoutModule,
-    AppRoutingModule  
+    AppRoutingModule ,
+    RestangularModule.forRoot(RestangularConfigFactory)  
   ],
   entryComponents: [
       LoginComponent
