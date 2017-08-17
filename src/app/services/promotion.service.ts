@@ -19,17 +19,17 @@ constructor(private http: Http,
               private processHTTPMsgService: ProcessHTTPMsgService) { }
 getPromotions(): Observable<Promotion[]> {
     return this.http.get(baseURL + 'promotions')
-                    .map(res => { return this.processHTTPMsgService.extractData(res); });
+                    .map(res => { return this.processHTTPMsgService.extractData(res); }).catch(error => { return this.processHTTPMsgService.handleError(error); });
     
   //  return Observable.of(PROMOTIONS).delay(2000);
 }
 getPromotion(id: number): Observable<Promotion> {    
     return this.http.get(baseURL + 'promotions/' + id)
-                    .map(res => { return this.processHTTPMsgService.extractData(res); });  
+                    .map(res => { return this.processHTTPMsgService.extractData(res); }).catch(error => { return this.processHTTPMsgService.handleError(error); }); 
 }
    
 getFeaturedPromotion(): Observable<Promotion> {
     return this.http.get(baseURL + 'promotions?featured=true')
-                    .map(res => { return this.processHTTPMsgService.extractData(res)[0]; });
+                    .map(res => { return this.processHTTPMsgService.extractData(res)[0]; }).catch(error => { return this.processHTTPMsgService.handleError(error); });
   }
 }
