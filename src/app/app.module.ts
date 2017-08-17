@@ -20,6 +20,9 @@ import { ContactComponent } from './contact/contact.component';
 import { LoginComponent } from './login/login.component';
 
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { RestangularModule, Restangular } from 'ngx-restangular';
+
+
 
 
 import { DishService } from './services/dish.service';
@@ -27,6 +30,7 @@ import { PromotionService } from './services/promotion.service';
 import { LeaderService } from './services/leader.service';
 import { ProcessHTTPMsgService } from './services/process-httpmsg.service';
 import { baseURL } from './shared/baseurl';
+import { RestangularConfigFactory } from './shared/restConfig';
 
 @NgModule({
   declarations: [
@@ -51,7 +55,7 @@ import { baseURL } from './shared/baseurl';
     AppRoutingModule  
   ],
   entryComponents: [
-LoginComponent
+      LoginComponent
 ],    
   providers: [ DishService, PromotionService,LeaderService,
                ProcessHTTPMsgService, 
