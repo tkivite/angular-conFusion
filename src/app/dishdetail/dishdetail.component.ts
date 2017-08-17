@@ -18,8 +18,8 @@ import 'rxjs/add/operator/switchMap';
   styleUrls: ['./dishdetail.component.scss']
 })
 export class DishdetailComponent implements OnInit {
- 
-    
+
+
 dishIds: number[];
 prev: number;
 next: number;
@@ -28,7 +28,8 @@ dish: Dish;
     
 commentForm: FormGroup;
 comment: Comment;
-errMess: string;    
+errMess: string; 
+dishcopy = null;     
     
 formErrors = {
     'author': '',
@@ -57,8 +58,14 @@ this.createForm();
 ngOnInit() {
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds,errmess => this.errMess = <any>errmess);
     this.route.params
+      .switchMap((params: Params) => { return this.dishservice.getDish(+params['id']); })
+      .subscribe(dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id); },
+          errmess => { this.dish = null; this.errMess = <any>errmess; });
+    /*
+    this.route.params
     .switchMap((params: Params) => this.dishservice.getDish(+params['id']))
     .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    */
 }
 setPrevNext(dishId: number) {
     let index = this.dishIds.indexOf(dishId);
@@ -92,8 +99,12 @@ onSubmit() {
 var todate = new Date();  
 this.comment = this.commentForm.value;
 this.comment.date =  todate.toISOString();
-console.log(this.comment);
-this.dish.comments.push(this.comment);        
+//console.log(this.comment);
+//this.dish.comments.push(this.comment); 
+    
+this.dishcopy.comments.push(this.comment);
+    this.dishcopy.save()
+      .subscribe(dish => { this.dish = dish; console.log(this.dish); });    
 
 this.commentForm.reset({
     author: '',
