@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
 
-import { flyInOut } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
+
+import { flyInOut,visibility, expand } from '../animations/app.animation';
  
 
 @Component({
@@ -14,7 +16,9 @@ import { flyInOut } from '../animations/app.animation';
   'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    visibility(),
+    expand()  
   ]    
 })
 
@@ -23,6 +27,15 @@ export class ContactComponent implements OnInit {
 feedbackForm: FormGroup;
 feedback: Feedback;
 contactType = ContactType;
+    
+visibility = 'shown';
+
+feedbackFromServer = null;  
+posting = false;   
+showFeedback = false;      
+    
+    
+   
     
 formErrors = {
 'firstname': '',
@@ -61,8 +74,7 @@ validationMessages = {
 },
 };    
     
-    
-constructor(private fb: FormBuilder) {
+constructor(private fb: FormBuilder,private feedbackService: FeedbackService,@Inject('BaseURL') private BaseURL ) { 
 this.createForm();
 }
 ngOnInit() {
@@ -86,33 +98,40 @@ this.onValueChanged(); // (re)set validation messages now
     
 }
 onSubmit() {
-this.feedback = this.feedbackForm.value;
-console.log(this.feedback);
-this.feedbackForm.reset({
-firstname: '',
-lastname: '',
-telnum: '',
-email: '',
-agree: false,
-contacttype: 'None',
-message: ''
-});
+    this.visibility = 'hidden';   
+    this.posting = true;
+    this.feedback = this.feedbackForm.value;
+    this.feedbackService.submitFeedback(this.feedback ).subscribe(feedback => {  this.feedbackFromServer = feedback;this.posting = false; this.showFeedback = true;   console.log(this.feedbackFromServer);   setTimeout(function(){ this.showFeedback = false; 
+    this.visibility = 'shown'; 
+    this.feedbackFromServer = null; 
+    this.feedbackForm.reset({
+        firstname: '',
+        lastname: '',
+        telnum: '',
+        email: '',
+        agree: false,
+        contacttype: 'None',
+        message: ''
+        });
+    }.bind(this), 5000); });  
+    
+
 }
     
 onValueChanged(data?: any) {
-if (!this.feedbackForm) { return; }
-const form = this.feedbackForm;
-for (const field in this.formErrors) {
-// clear previous error message (if any)
-this.formErrors[field] = '';
-const control = form.get(field);
-if (control && control.dirty && !control.valid) {
-const messages = this.validationMessages[field];
-for (const key in control.errors) {
-this.formErrors[field] += messages[key] + ' ';
-}
-}
-}
-}    
-    
+       if (!this.feedbackForm) { return; }
+        const form = this.feedbackForm;
+     for (const field in this.formErrors) {
+               // clear previous error message (if any)
+               this.formErrors[field] = '';
+               const control = form.get(field);
+            if (control && control.dirty && !control.valid) {
+               const messages = this.validationMessages[field];
+               for (const key in control.errors){
+               this.formErrors[field] += messages[key] + ' ';
+               }
+            }
+        }
+}  
+               
 }

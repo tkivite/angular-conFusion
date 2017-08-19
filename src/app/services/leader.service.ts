@@ -3,28 +3,29 @@ import { Leader } from '../shared/leader';
 
 import { Observable } from 'rxjs/Observable';
 
-import { Http, Response } from '@angular/http';
 import { baseURL } from '../shared/baseurl';
 import { ProcessHTTPMsgService } from './process-httpmsg.service';
+import { RestangularModule, Restangular } from 'ngx-restangular';
 
 import 'rxjs/add/operator/delay';
-import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/of'
 import 'rxjs/add/operator/catch';
 
 
 @Injectable()
 export class LeaderService {
 
-  constructor(private http: Http,
+  constructor(private restangular: Restangular,
               private processHTTPMsgService: ProcessHTTPMsgService) { }
 getLeaders(): Observable<Leader[]> {
- return this.http.get(baseURL + 'leaders')
-                    .map(res => { return this.processHTTPMsgService.extractData(res); }).catch(error => { return this.processHTTPMsgService.handleError(error); });
+    
+    return this.restangular.all('leaders').getList();
+    
+    
 }
 
     getFeaturedLeader(): Observable<Leader> {
-        return this.http.get(baseURL + 'leaders?featured=true')
-                    .map(res => { return this.processHTTPMsgService.extractData(res)[0]; }).catch(error => { return this.processHTTPMsgService.handleError(error); });
+        return this.restangular.all('leaders').getList({featured: true}).map(dishes => dishes[0]);;
 
 }
 

@@ -1,0 +1,102 @@
+
+<!-- saved from url=(0109)https://s3.amazonaws.com/coursera-uploads/peer-review/ebb1b36c7fc1accc2190a826d8031f59/contact.component.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body><div class="container" fxlayout="column" fxlayoutgap="10px">
+
+     <div fxflex="">
+            <div>
+               <h3>Contact Us</h3>
+               <hr>
+            </div>
+     </div>
+
+    <div fxflex="">
+      <h3>Location Information</h3>
+      <div fxlayout="column" fxlayout.gt-sm="row">
+          <div fxflex="50" fxflexoffset="20px">
+                <h4>Our Address</h4>
+                <address>
+		              121, Clear Water Bay Road<br>
+		              Clear Water Bay, Kowloon<br>
+		              HONG KONG<br>
+		              <i class="fa fa-phone"></i>: +852 1234 5678<br>
+		              <i class="fa fa-fax"></i>: +852 8765 4321<br>
+		              <i class="fa fa-envelope"></i>:
+                        <a href="mailto:confusion@food.net">confusion@food.net</a>
+		           </address>
+               <p></p>
+                <div>
+                    <a md-raised-button="" href="tel:+85212345678"><i class="fa fa-phone"></i> Call</a>
+                    <a md-raised-button=""><i class="fa fa-skype"></i> Skype</a>
+                    <a md-raised-button="" href="mailto:confusion@food.net"><i class="fa fa-envelope-o"></i> Email</a>
+                </div>
+            </div>
+          <div fxflex="40">
+                <h4>Map of our Location</h4>
+          </div>
+        </div>
+      </div>
+
+      <div fxflex="" fxflexoffset="20px" class="form-size" *ngif="!submitting &amp;&amp; !newFeedback">
+         <!-- <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p> -->
+         <h3>Send us your Feedback</h3>
+
+         <form novalidate="" [formgroup]="feedbackForm" (ngsubmit)="onSubmit()">
+            <p>
+               <md-input-container class="half-width" dividercolor="{{ formErrors.firstname ? &#39;warn&#39;: &#39;primary&#39; }}">
+                  <input mdinput="" formcontrolname="firstname" placeholder="First Name" type="text" required="">
+                  <md-hint><span [hidden]="!(formErrors.firstname)">{{formErrors.firstname}}</span>
+                  </md-hint>
+               </md-input-container>
+               <md-input-container class="half-width" dividercolor="{{ formErrors.lastname ? &#39;warn&#39;: &#39;primary&#39; }}">
+                  <input mdinput="" formcontrolname="lastname" placeholder="Last Name" type="text" required="">
+                  <md-hint><span [hidden]="!(formErrors.lastname)">{{formErrors.lastname}}</span>
+                  </md-hint>
+               </md-input-container>
+               <md-input-container class="half-width" dividercolor="{{ formErrors.telnum ? &#39;warn&#39;: &#39;primary&#39; }}">
+                  <input mdinput="" formcontrolname="telnum" placeholder="Tel. Number" type="tel" pattern="[0-9]*" required="">
+                  <md-hint><span [hidden]="!(formErrors.telnum)">{{formErrors.telnum}}</span>
+                  </md-hint>
+               </md-input-container>
+               <md-input-container class="half-width" dividercolor="{{ formErrors.email ? &#39;warn&#39;: &#39;primary&#39; }}">
+                  <input mdinput="" formcontrolname="email" placeholder="Email" type="email" email="" required="">
+                  <md-hint><span [hidden]="!(formErrors.email)">{{formErrors.email}}</span>
+                  </md-hint>
+               </md-input-container>
+            </p>
+            <table class="form-size">
+               <tbody><tr><td>
+                  <md-slide-toggle formcontrolname="agree">May we contact you?</md-slide-toggle>
+               </td>
+               <td>
+                  <md-select placeholder="How?" formcontrolname="contacttype">
+                     <md-option *ngfor="let ctype of contactType" [value]="ctype">
+                        {{ ctype }}
+                     </md-option>
+                  </md-select>
+               </td>
+            </tr></tbody></table>
+            <p>
+               <md-input-container class="full-width">
+                  <textarea mdinput="" formcontrolname="message" placeholder="Your Feedback" rows="12"></textarea>
+               </md-input-container>
+            </p>
+            <button type="submit" md-button="" class="background-primary text-floral-white" [disabled]="feedbackForm.invalid">Submit</button>
+         </form>
+      </div>
+      <div *ngif="!submitting &amp;&amp; newFeedback">
+         <!-- <h3>Send us your Feedback</h3> -->
+         <h4>Submitting Form</h4><md-spinner></md-spinner>
+      </div>
+      <div fxflex="" fxflexoffset="20px" *ngif="submitting &amp;&amp; newFeedback">
+         <h3>Send us your Feedback</h3>
+         <h3>Your Submission</h3>
+         <p md-line="">First Name: {{ newFeedback.firstname }}</p>
+         <p md-line="">Last Name: {{ newFeedback.lastname }}</p>
+         <p md-line="">Tel Number: {{ newFeedback.telnum }}</p>
+         <p md-line="">Email: {{ newFeedback.email }}</p>
+         <p md-line="">Contact You?: {{ newFeedback.agree }}</p>
+         <p md-line="">How?: {{ newFeedback.contacttype }}</p>
+         <p md-line="">Feedback: {{ newFeedback.message }}</p>
+      </div>
+</div>
+</body></html>
